@@ -1,0 +1,13 @@
+diff --git a/include/config.h b/include/config.h
+index 529dc4e..2035e84 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -224,7 +224,7 @@
+
+ /* Fuzzer stats file and plot update intervals (sec): */
+
+-#define STATS_UPDATE_SEC 60
++#define STATS_UPDATE_SEC 5
+ #define PLOT_UPDATE_SEC 5
+
+ /* Smoothing divisor for CPU load and exec speed stats (1 - no smoothing). */

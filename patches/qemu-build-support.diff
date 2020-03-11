@@ -1,0 +1,55 @@
+diff --git a/qemu_mode/build_qemu_support.sh b/qemu_mode/build_qemu_support.sh
+index 09c04e7..767f9b7 100755
+--- a/qemu_mode/build_qemu_support.sh
++++ b/qemu_mode/build_qemu_support.sh
+@@ -162,6 +162,7 @@ patch -p1 <../patches/configure.diff || exit 1
+ patch -p1 <../patches/tcg-runtime.diff || exit 1
+ patch -p1 <../patches/tcg-runtime-head.diff || exit 1
+ patch -p1 <../patches/translator.diff || exit 1
++patch -p1 <../patches/exit-double-read.diff || exit 1
+ 
+ echo "[+] Patching done."
+ 
+@@ -178,7 +179,7 @@ if [ "$STATIC" = "1" ]; then
+ 	  --disable-libusb --disable-usb-redir --disable-vde --disable-vhost-net --disable-virglrenderer \
+ 	  --disable-virtfs --disable-vnc --disable-vte --disable-xen --disable-xen-pci-passthrough --disable-xfsctl \
+ 	  --enable-linux-user --disable-system --disable-blobs --disable-tools --enable-capstone=internal \
+-	  --target-list="${CPU_TARGET}-linux-user" --static --disable-pie --cross-prefix=$CROSS_PREFIX || exit 1
++	  --target-list=i386-linux-user,x86_64-linux-user --static --disable-pie --cross-prefix=$CROSS_PREFIX || exit 1
+ 
+ else
+ 
+@@ -187,7 +188,7 @@ else
+   
+   ./configure --disable-system \
+     --enable-linux-user --disable-gtk --disable-sdl --disable-vnc --enable-capstone=internal \
+-    --target-list="${CPU_TARGET}-linux-user" --enable-pie $CROSS_PREFIX || exit 1
++    --target-list=i386-linux-user,x86_64-linux-user --enable-pie $CROSS_PREFIX || exit 1
+ 
+ fi
+ 
+@@ -199,14 +200,21 @@ make -j `nproc` || exit 1
+ 
+ echo "[+] Build process successful!"
+ 
+-echo "[*] Copying binary..."
++echo "[*] Copying binaries..."
+ 
+-cp -f "${CPU_TARGET}-linux-user/qemu-${CPU_TARGET}" "../../afl-qemu-trace" || exit 1
++# cp -f "${CPU_TARGET}-linux-user/qemu-${CPU_TARGET}" "../../afl-qemu-trace" || exit 1
++for target in i386 x86_64; do
++        mkdir -p ../../tracers/${target} || exit 1
++        cp -f "${target}-linux-user/qemu-${target}" "../../tracers/${target}/afl-qemu-trace" || exit 1
++        cp -f "../../libradamsa.so" "../../tracers/${target}/" || exit 1
++done
++
++cp -f "${target}-linux-user/qemu-${CPU_TARGET}" "../../afl-qemu-trace" || exit 1
+ 
+ cd ..
+ ls -l ../afl-qemu-trace || exit 1
+ 
+-echo "[+] Successfully created '../afl-qemu-trace'."
++echo "[+] Successfully build qemu mode'."
+ 
+ if [ "$ORIG_CPU_TARGET" = "" ]; then
+ 

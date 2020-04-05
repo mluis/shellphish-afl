@@ -6,9 +6,8 @@ AFL packaged for easy pip installation.
 
 First install the prerequisite packages:
 
-      sudo apt-get install build-essential gcc-multilib debootstrap debian-archive-keyring
-      sudo apt-get build-dep qemu
+	  sudo apt install build-essential libtool-bin python3 automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
 
 Then install `shellphish-afl`:
 
-     pip install git+https://github.com/shellphish/shellphish-afl
+     pip install git+https://github.com/ruaronicola/shellphish-afl

@@ -41,6 +41,7 @@ index 118f6ebd24b4..a13c17be3656 100755
 +  mkdir -p ../../tracers/${target} || exit 1
 +  cp -f "${target}-linux-user/qemu-${target}" "../../tracers/${target}/afl-qemu-trace" || exit 1
 +  cp -f "../../libradamsa.so" "../../tracers/${target}/" || exit 1
++  cp -f "../../afl-showmap" "../../tracers/${target}/" || exit 1
 +done
 +cp -f "${target}-linux-user/qemu-${CPU_TARGET}" "../../afl-qemu-trace" || exit 1
  

@@ -17,7 +17,7 @@ def _setup():
     # revisiting the afl mirrorer repo
     if not os.path.exists(AFL_UNIX_INSTALL_PATH):
         AFL_UNIX_REPO = "https://github.com/AFLplusplus/AFLplusplus.git"
-        if subprocess.call(['git', 'clone', '--branch', '2.63c', AFL_UNIX_REPO, AFL_UNIX_INSTALL_PATH]) != 0:
+        if subprocess.call(['git', 'clone', '--branch', '2.64c', AFL_UNIX_REPO, AFL_UNIX_INSTALL_PATH]) != 0:
             raise LibError("Unable to retrieve afl-unix")
 
         with open(QEMU_BUILD_SUPPORT_PATCH_FILE, "rb") as f:
